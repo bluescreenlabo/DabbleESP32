@@ -2,14 +2,8 @@
 #include "DabbleESP32.h"
 #include "LedControlModule.h"
 
-
-#include <driver/ledc.h>
-
-
 #ifdef ESP32
 #define MAX_PWM_CHANNELS	8
-uint8_t freeChannel =0,prevPin=0,currentChannel=0;
-bool pinType=0;   // flag to differentiate pin behaviour means whether pin will be traeted as PWM or digital
 #endif
 
 LedControlModule::LedControlModule(): ModuleParent(LEDCONTROL_ID)
@@ -37,11 +31,12 @@ void LedControlModule::processData()
 				Serial.println(currentChannel);
 				#endif*/
 				currentChannel = freeChannel;
-				ledcAttachChannel(pin, 12000, 8, currentChannel);
-				
-				// ledcAttach(pin, currentChannel); // Attach the pin to the channel
-				// ledcSetup(currentChannel, 1000, 8); // Set the PWM frequency (1000 Hz in this example) and resolution (8 bits)
-
+#if ESP_ARDUINO_VERSION_MAJOR >= 3
+				ledcAttach(pin, 100, 8);
+#else
+				ledcSetup(currentChannel, 100, 8);
+				ledcAttachPin(pin, currentChannel);
+#endif
 				freeChannel++;
 				/*#ifdef DEBUG
 				Serial.print("freeChannels: ");

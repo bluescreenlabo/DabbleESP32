@@ -167,7 +167,7 @@ public:
 	//Processing Incomming Frames
 	void processInput();
     void appWrite(byte command);	
-	void begin(std::string bleName);
+	void begin(String bleName);
 	//Adding objects in array 
 	static void addToModulesArray(ModuleParent *);
 	// #ifdef INTERNET_MODULE

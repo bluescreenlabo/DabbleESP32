@@ -1,3 +1,49 @@
+#pragma once
+#include "ModuleParent.h"
+
+class motorControls : public ModuleParent
+{
+public:
+    motorControls();
+    void processData() override;
+
+    void runMotor1(uint8_t pwm, uint8_t d1, uint8_t d2);
+    void runMotor2(uint8_t pwm, uint8_t d1, uint8_t d2);
+    void runServo1(uint8_t pin);
+    void runServo2(uint8_t pin);
+    byte functionId;
+	byte byte1;
+	byte byte2;
+
+private:
+    int8_t pwmMotor1 = 0;
+    int8_t pwmMotor2 = 0;
+
+    uint8_t motor1Pin = 0xFF;
+    uint8_t motor2Pin = 0xFF;
+    uint8_t servo1Pin = 0xFF;
+    uint8_t servo2Pin = 0xFF;
+
+    uint8_t angleServo1 = 90;
+    uint8_t angleServo2 = 90;
+
+    static int minPulseWidth;
+    static int maxPulseWidth;
+    static int minAngle;
+    static int maxAngle;
+
+    int angleTomicroseconds(int degree);
+    int microsecondsToDuty(int pulse);
+    void writeServoAngle(int angle, uint8_t pin);
+};
+
+extern motorControls Controls;
+
+
+#if 0
+
+
+
 #ifndef motorControls_h
 #define motorControls_h
 
@@ -52,3 +98,4 @@ class motorControls : public ModuleParent
 extern motorControls Controls;
 
 #endif 
+#endif
